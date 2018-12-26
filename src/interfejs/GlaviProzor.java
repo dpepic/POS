@@ -10,11 +10,19 @@ import v2.*;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
+import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class GlaviProzor {
 
 	private JFrame frame;
 	private JTable table;
+	private JTabbedPane tabbedPane;
+	private JPanel panel;
+	private JButton btnUnesiArtikal;
 
 	public void podesiFrame(boolean prikaz)
 	{
@@ -37,17 +45,26 @@ public class GlaviProzor {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(32, 25, 347, 191);
-		frame.getContentPane().add(scrollPane);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(10, 11, 414, 293);
+		frame.getContentPane().add(tabbedPane);
 
-		table = new JTable();
+		panel = new JPanel();
+		tabbedPane.addTab("Artikli", null, panel, null);
+		panel.setLayout(null);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 399, 142);
+		panel.add(scrollPane);
+
+		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-						"Naziv artikla", "Na lageru", "Nabavna cena", "Prodajna cena"
-				}
+				new Object[][] 
+						{
+						},
+						new String[] {
+								"Naziv artikla", "Na lageru", "Nabavna cena", "Prodajna cena"
+						}
 				) {
 			Class[] columnTypes = new Class[] {
 					String.class, Integer.class, Double.class, Double.class
@@ -67,6 +84,21 @@ public class GlaviProzor {
 		scrollPane.setViewportView(table);
 
 		JButton btnObrisiArtikal = new JButton("Obrisi artikal");
+		btnObrisiArtikal.setBounds(10, 154, 135, 23);
+		panel.add(btnObrisiArtikal);
+
+		btnUnesiArtikal = new JButton("Unesi Artikal");
+		btnUnesiArtikal.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				UnosArtikala prozorZaUnos = new UnosArtikala(table);
+				prozorZaUnos.prikaziProzor();
+	
+			}
+		});
+		btnUnesiArtikal.setBounds(10, 188, 135, 23);
+		panel.add(btnUnesiArtikal);
 		btnObrisiArtikal.addMouseListener(new MouseAdapter() 
 		{
 			@Override
@@ -87,13 +119,10 @@ public class GlaviProzor {
 				}
 			}
 		});
-		btnObrisiArtikal.setBounds(258, 243, 121, 23);
-		frame.getContentPane().add(btnObrisiArtikal);
-
-		for (Artikal neki: Artikal.sviArtikli)
-		{
-			((DefaultTableModel)table.getModel()).addRow(neki.zaPrikaz);
-		}
-
+		
+		Sistem.ucitajArtikleUtabelu(table);
+		
 	}
+	
+	
 }

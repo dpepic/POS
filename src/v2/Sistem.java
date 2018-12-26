@@ -3,6 +3,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 import java.text.*;
 import OperacijeSaFajlovima.CSVoperacije;
 
@@ -10,6 +14,16 @@ public class Sistem
 {
 	static DateFormat formatDatuma = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
+	
+	public static void ucitajArtikleUtabelu(JTable tabelaZaUnos)
+	{
+		((DefaultTableModel)tabelaZaUnos.getModel()).getDataVector().removeAllElements();
+		for (Artikal neki: Artikal.sviArtikli)
+		{
+			((DefaultTableModel)tabelaZaUnos.getModel()).addRow(neki.zaPrikaz);
+		}
+	}
+	
 	public static void upisiArtikle()
 	{
 		Stack<String> zaUpis = new Stack<String>();
@@ -140,7 +154,7 @@ public class Sistem
 		}
 	}
 
-	public static Artikal unesiArtikal() throws IOException
+	public static void unesiArtikal() throws IOException
 	{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -167,7 +181,7 @@ public class Sistem
 			}
 		}
 
-		return art;
+		Artikal.sviArtikli.add(art);
 	}
 
 	public static Racun unesiRacun() throws IOException

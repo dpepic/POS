@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Artikal 
 {
-	String naziv;
+	public String naziv;
 	double nabavnaCena;
 	double prodajnaCena;
 	Integer marzaProc;

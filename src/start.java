@@ -16,7 +16,6 @@ public class start {
 		System.out.println("==============================================================\n");
 		
 		System.out.println("Momenat, dok ucitam bazu artikala i racuna...\n");
-
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
